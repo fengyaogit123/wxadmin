@@ -13,14 +13,20 @@ class UserController extends Controller {
             sex: { type: "string", required: true, message: "请选择性别" },
             password: { type: "string", required: true, message: "请输入密码" },
         };
-        if(this.ctx.user.isAdmin){
+
+        if (this.ctx.user && this.ctx.user.isAdmin) {
             delete rule.code
+            const data = this.ctx.request.body;
+            await this.ctx.validate(rule, data);
+            this.ctx.body = await this.service[Modal].create(data)
+            return
         }
+        
         //ctx.session.code
         const data = this.ctx.request.body;
         await this.ctx.validate(rule, data);
-        if(!this.ctx.user.isAdmin && this.ctx.session.code !=data.code){
-            return this.ctx.throw(401,"验证码不正确")
+        if (this.ctx.session.code != data.code) {
+            return this.ctx.throw(401, "验证码不正确")
         }
         this.ctx.body = await this.service[Modal].create(data)
     }
