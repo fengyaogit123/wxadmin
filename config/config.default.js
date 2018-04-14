@@ -9,8 +9,9 @@ module.exports = appInfo => {
     // add your config here
     config.middleware = [];
     config.mongoose = {
-        url: 'mongodb://127.0.0.1:27017/bespeakdb',
-        options: {},
+        url: 'mongodb://root:12345_root@139.199.34.199:27017/bespeakdb?authSource=admin',
+        options: {
+        },
     };
     //web安全
     config.security = {
