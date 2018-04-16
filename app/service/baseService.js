@@ -11,7 +11,7 @@ class BaseService extends Service {
         return this.$model.remove({ _id: { $in: ids } });
     }
     async update({ _id, ...update } = {}) {
-        return this.$model.update({ _id }, update);
+        return this.$model.update({ _id }, { $set: update });
     }
 }
 module.exports = BaseService

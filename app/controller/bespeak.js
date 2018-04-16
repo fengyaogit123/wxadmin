@@ -10,7 +10,7 @@ class BespeakController extends Controller {
             return
         }
         //生成号码
-        const bespeakNumber = (+new Date()).toString(36);
+        const bespeakNumber = await this.ctx.service.numbers.inc();
         this.ctx.body = await this.ctx.service[Modal].create({
             bespeakNumber,
             user: user._id
