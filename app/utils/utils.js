@@ -78,8 +78,12 @@ const utils = {
             size = 20;
         if (size > 1000)
             size = 1000;
-        const count = await callback().count();
-        const rows = await callback().skip((pageNo - 1) * size).limit(size);
+        let presult = await Promise.all([
+            callback().count(),
+            callback().skip((pageNo - 1) * size).limit(size)
+        ])
+        const count = presult[0];
+        const rows = presult[1];
         return {
             size,
             pageNo,
@@ -125,6 +129,24 @@ const utils = {
             imgbase64,
             code
         }
+    },
+    bespeakFormat(number) {
+        if (number > 26 * 10) {
+            number = number % 260;
+        }
+        let arr = ["A", "B", "C", "D", "E", "F",
+            "G", "H", "I", "J", "k", "L", "M", "N", "O",
+            "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        let letter = parseInt(number / 10);
+        let last = number % 10;
+        if (last == 0) {
+            last = "10"
+            letter--;
+        } else {
+            last = `0${last}`
+        }
+        let formatStr = `${arr[letter]}${last}`
+        return formatStr;
     }
 };
 module.exports = utils;

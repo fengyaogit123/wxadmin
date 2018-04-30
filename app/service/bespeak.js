@@ -7,7 +7,7 @@ class BespeakService extends BaseService {
     }
     //判断用户是否预约
     async findByUser(_id) {
-        return await this.$model.findOne({ user: _id }).populate([{
+        return await this.$model.findOne({ user: _id  }).populate([{
             path: "user",
             match: { password: false }
         }])
@@ -25,11 +25,19 @@ class BespeakService extends BaseService {
                     $in: ids.map(({ _id }) => _id)
                 }
             }
+            if (query.createdAt) {
+                let date = new Date(query.createdAt)
+                let hdate = new Date(+date + 24 * 3600 * 1000);
+                console.log('查询='+date.Format('yyyy-MM-dd hh:mm:ss')+'到'+hdate.Format('yyyy-MM-dd hh:mm:ss'))
+                Query.$and=[{ createdAt: { $gt: date } },{ createdAt: { $lt: hdate } }]
+            }
             return this.$model.find(Query).sort({ _id: -1 }).populate([{
-                path: "user"
-            }])
+                path: "user",
+            }]);
+
         });
-        return result;
+
+        return result
     }
 }
 module.exports = BespeakService

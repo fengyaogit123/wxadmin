@@ -3,18 +3,27 @@ const { Controller } = require("egg");
 const Modal = "bespeak"
 class BespeakController extends Controller {
     async create() {
+        const {bespeakFormat} =  this.ctx.helper;
         const user = this.ctx.user;
         const bespeak = await this.ctx.service[Modal].findByUser(user._id)
         if (bespeak) {
-            this.ctx.body = bespeak;
+            this.ctx.body = {
+                ...bespeak,
+                bespeakNumber: bespeakFormat(+bespeak.bespeakNumber)
+            };
             return
         }
         //生成号码
         const bespeakNumber = await this.ctx.service.numbers.inc();
-        this.ctx.body = await this.ctx.service[Modal].create({
+        let result = await this.ctx.service[Modal].create({
             bespeakNumber,
             user: user._id
         })
+        //
+        this.ctx.body = {
+            ...result,
+            bespeakNumber: bespeakFormat(+result.bespeakNumber)
+        }
     }
     async list() {
         this.ctx.body = await this.service[Modal].findList(this.ctx.query)
