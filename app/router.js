@@ -10,7 +10,8 @@ module.exports = (app) => {
     router.get("/api/users/list", userAdmin, users.list);
     router.post("/api/users/update", userAdmin, users.update)
 
-    router.post("/api/bespeak/create", userRequired, bespeak.create)
+    router.post("/api/bespeak/create", bespeak.create)
+    router.put('/api/bespeak/updateStatus', userAdmin, bespeak.updateStatus)
     router.del("/api/bespeak/remove", userAdmin, bespeak.remove)
     router.get("/api/bespeak/list", userAdmin, bespeak.list)
     // 登录校验
