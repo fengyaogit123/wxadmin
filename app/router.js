@@ -14,6 +14,7 @@ module.exports = (app) => {
     router.put('/api/bespeak/updateStatus', userAdmin, bespeak.updateStatus)
     router.del("/api/bespeak/remove", userAdmin, bespeak.remove)
     router.get("/api/bespeak/list", userAdmin, bespeak.list)
+    router.get("/api/bespeak/exportExl",userAdmin,bespeak.exportExl)
     // 登录校验
     router.post('/api/login', app.passport.authenticate('local', { successRedirect: '/api/login/authCallback' }));
     router.post('/api/loginOut', login.loginOut);
