@@ -5,19 +5,24 @@ class NumberService extends BaseService {
         return this.ctx.model.Numbers
     }
     //当天预约号增加1
-    async inc() {
+    async inc(userId) {
         //1.查询大余当天记录是否存在，不存在则加1
-        const Today = new Date(new Date().Format('yyyy-MM-dd'))
-        const find = {
-            $and: {
-                createdAt: { $gt: Today }
-            }
+        const d = new Date();
+        const Today = new Date(d.getFullYear(),d.getMonth(),d.getDate())
+        let result = await this.$model.findOne({
+            userId:userId,
+            createdTime: {$gte:Today}
+        })
+        if(!result){
+            await this.$model.create({
+                userId:userId,
+                index:1,
+                createdTime:Today
+            })
+            return 1;
         }
-        
-        let result = await this.$model.findOneAndUpdate({}, {
-            $inc: { index: 1 },
-            createdAt: Today
-        }, { upsert: true, new: true })
+        result.index++;
+        result.save();
         return result.index
     }
 }

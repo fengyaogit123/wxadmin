@@ -12,6 +12,7 @@ module.exports = (app) => {
         payType: String,//付款类型
         bDate: Date,//预约时间
         adviser: String,//职业顾问
+        user:{type:Schema.Types.ObjectId,ref:"Users"},
         adviserPhone: String//职业顾问电话
     }, {
             versionKey: false,

@@ -19,11 +19,13 @@ class BespeakController extends Controller {
             return this.ctx.throw(401, "验证码不正确")
         }
         await this.ctx.validate(rule, data);
+        let userId = this.ctx.user._id
         //生成号码
-        const bespeakNumber = await this.ctx.service.numbers.inc();
+        const bespeakNumber = await this.ctx.service.numbers.inc(userId);
         let result = await this.ctx.service[Modal].create({
             bespeakNumber,
-            ...data
+            ...data,
+            user:userId
         })
         //
         this.ctx.body = result

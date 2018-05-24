@@ -33,6 +33,7 @@ class BespeakService extends BaseService {
     }
     async findList({ size, pageNo, ...query } = {}) {
         const { QueryPage } = this.ctx.helper;
+        const user = this.ctx.user;
         const result = await QueryPage({ size, pageNo }, () => {
             const Query = {};
 
@@ -46,6 +47,10 @@ class BespeakService extends BaseService {
 
             if (query.phone) {
                 Query.phone = new RegExp(query.phone)
+            }
+
+            if(!user.isAdmin){
+                Query.user = user._id ;
             }
 
             if (query.bDate) {
