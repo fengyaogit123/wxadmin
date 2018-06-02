@@ -22,6 +22,10 @@ class BespeakService extends BaseService {
             Query.phone = new RegExp(query.phone)
         }
 
+        if(!query.status||query.status==0){
+            Query.status={$ne:1}
+        }
+        
         if (query.bDate) {
             let date = new Date(query.bDate)
             let hdate = new Date(+date + 24 * 3600 * 1000);
@@ -48,7 +52,9 @@ class BespeakService extends BaseService {
             if (query.phone) {
                 Query.phone = new RegExp(query.phone)
             }
-
+            if(!query.status||query.status==0){
+                Query.status={$ne:1}
+            }
             if(!user.isAdmin){
                 Query.user = user._id ;
             }
