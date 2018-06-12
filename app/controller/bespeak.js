@@ -12,7 +12,6 @@ class BespeakController extends Controller {
             phone: { type: "string", required: true, message: "请输入手机号" },//手机号
             projectName: { type: "string", required: true, message: "请输入项目名称" },//项目名称
             bDate: { type: "string", required: true, message: "请输入预约时间" },//预约时间
-            roomNum: { type: "string", required: true, message: "请输入房号" }//职业顾问
         };
         const data = this.ctx.request.body;
         if (this.ctx.session.code != data.code) {
